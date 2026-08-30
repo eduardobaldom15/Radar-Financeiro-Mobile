@@ -1,0 +1,23 @@
+# .NET
+bin/
+obj/
+.vs/
+
+# Node / React
+node_modules/
+dist/
+
+# Android Studio / Gradle
+.gradle/
+**/build/
+local.properties
+*.iml
+.idea/
+.DS_Store
+
+# Android generated files
+.externalNativeBuild/
+.cxx/
+
+# Local configuration / secrets
+appsettings.Development.json
