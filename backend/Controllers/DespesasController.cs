@@ -23,14 +23,21 @@ public class DespesasController : ControllerBase
 	[HttpGet("projeto/{id}")]
 	public IActionResult GetByProjeto(int id)
 	{
-		var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
+		try
+		{
+			var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
 
-		var despesas = _context.Despesas
-			.Include(d => d.Projeto)
-			.Where(d => d.ProjetoId == id && d.Projeto.PesquisadorId == userId)
-			.ToList();
+			var despesas = _context.Despesas
+				.Include(d => d.Projeto)
+				.Where(d => d.ProjetoId == id && d.Projeto!.PesquisadorId == userId)
+				.ToList();
 
-		return Ok(despesas);
+			return Ok(despesas);
+		}
+		catch (Exception)
+		{
+			return StatusCode(500, $"Erro ao buscar despesas.");
+		}
 	}
 
 	// POST com validação de segurança
@@ -38,18 +45,25 @@ public class DespesasController : ControllerBase
 	[HttpPost]
 	public IActionResult Post(Despesa despesa)
 	{
-		var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
+		try
+		{
+			var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
 
-		var projetoValido = _context.Projetos
-			.FirstOrDefault(p => p.Id == despesa.ProjetoId && p.PesquisadorId == userId);
+			var projetoValido = _context.Projetos
+				.FirstOrDefault(p => p.Id == despesa.ProjetoId && p.PesquisadorId == userId);
 
-		if (projetoValido == null)
-			return BadRequest("Projeto inválido");
+			if (projetoValido == null)
+				return BadRequest("Projeto inválido");
 
-		_context.Despesas.Add(despesa);
-		_context.SaveChanges();
+			_context.Despesas.Add(despesa);
+			_context.SaveChanges();
 
-		return Ok(despesa);
+			return Ok(despesa);
+		}
+		catch (Exception)
+		{
+			return StatusCode(500, $"Erro ao criar despesa.");
+		}
 	}
 
 	// PUT seguro
@@ -57,25 +71,32 @@ public class DespesasController : ControllerBase
 	[HttpPut("{id}")]
 	public IActionResult Put(int id, Despesa despesaAtualizada)
 	{
-		var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
+		try
+		{
+			var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
 
-		var despesa = _context.Despesas
-			.Include(d => d.Projeto)
-			.FirstOrDefault(d => d.Id == id && d.Projeto.PesquisadorId == userId);
+			var despesa = _context.Despesas
+				.Include(d => d.Projeto)
+				.FirstOrDefault(d => d.Id == id && d.Projeto!.PesquisadorId == userId);
 
-		if (despesa == null)
-			return NotFound();
+			if (despesa == null)
+				return NotFound();
 
-		despesa.Categoria = despesaAtualizada.Categoria;
-		despesa.Tipo = despesaAtualizada.Tipo;
-		despesa.NomeDespesa = despesaAtualizada.NomeDespesa;
-		despesa.ValorOrcado = despesaAtualizada.ValorOrcado;
-		despesa.ValorRealizado = despesaAtualizada.ValorRealizado;
-		despesa.ProjetoId = despesaAtualizada.ProjetoId;
+			despesa.Categoria = despesaAtualizada.Categoria;
+			despesa.Tipo = despesaAtualizada.Tipo;
+			despesa.NomeDespesa = despesaAtualizada.NomeDespesa;
+			despesa.ValorOrcado = despesaAtualizada.ValorOrcado;
+			despesa.ValorRealizado = despesaAtualizada.ValorRealizado;
+			despesa.ProjetoId = despesaAtualizada.ProjetoId;
 
-		_context.SaveChanges();
+			_context.SaveChanges();
 
-		return Ok(despesa);
+			return Ok(despesa);
+		}
+		catch (Exception)
+		{
+			return StatusCode(500, $"Erro ao atualizar despesa.");
+		}
 	}
 
 	// DELETE seguro
@@ -83,18 +104,25 @@ public class DespesasController : ControllerBase
 	[HttpDelete("{id}")]
 	public IActionResult Delete(int id)
 	{
-		var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
+		try
+		{
+			var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
 
-		var despesa = _context.Despesas
-			.Include(d => d.Projeto)
-			.FirstOrDefault(d => d.Id == id && d.Projeto.PesquisadorId == userId);
+			var despesa = _context.Despesas
+				.Include(d => d.Projeto)
+				.FirstOrDefault(d => d.Id == id && d.Projeto!.PesquisadorId == userId);
 
-		if (despesa == null)
-			return NotFound();
+			if (despesa == null)
+				return NotFound();
 
-		_context.Despesas.Remove(despesa);
-		_context.SaveChanges();
+			_context.Despesas.Remove(despesa);
+			_context.SaveChanges();
 
-		return NoContent();
+			return NoContent();
+		}
+		catch (Exception)
+		{
+			return StatusCode(500, $"Erro ao deletar despesa.");
+		}
 	}
 }

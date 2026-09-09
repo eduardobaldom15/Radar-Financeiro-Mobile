@@ -1,8 +1,14 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace backend.Models;
 
 public class LoginModel
 {
-	public string Email { get; set; }
+	[Required]
+	[EmailAddress]
+	public required string Email { get; set; }
 
-	public string Senha { get; set; }
+	[Required]
+	[DataType(DataType.Password)]
+	public required string Senha { get; set; }
 }

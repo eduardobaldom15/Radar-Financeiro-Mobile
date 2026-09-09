@@ -1,14 +1,22 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace backend.Models;
 
 public class Despesa
 {
     public int Id { get; set; }
+    
+    [Required]
+    [MaxLength(100)]
+    public required string Categoria { get; set; }
 
-    public string Categoria { get; set; }
+    [Required]
+    [MaxLength(100)]
+    public required string Tipo { get; set; }
 
-    public string Tipo { get; set; }
-
-    public string NomeDespesa { get; set; }
+    [Required]
+    [MaxLength(250)]
+    public required string NomeDespesa { get; set; }
 
     public decimal ValorOrcado { get; set; }
 

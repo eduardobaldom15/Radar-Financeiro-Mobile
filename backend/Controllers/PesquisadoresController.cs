@@ -21,80 +21,122 @@ public class PesquisadoresController : ControllerBase
     [HttpGet]
     public IActionResult Get()
     {
-        var pesquisadores = _context.Pesquisadores.ToList();
+        try
+        {
+            var pesquisadores = _context.Pesquisadores.ToList();
 
-        return Ok(pesquisadores);
+            return Ok(pesquisadores);
+        }
+        catch (Exception)
+        {
+            return StatusCode(500, $"Erro ao buscar pesquisadores.");
+        }
     }
 
     [HttpPost]
     public IActionResult Post(Pesquisador pesquisador)
     {
-        _context.Pesquisadores.Add(pesquisador);
+        try
+        {
+            _context.Pesquisadores.Add(pesquisador);
 
-        _context.SaveChanges();
+            _context.SaveChanges();
 
-        return CreatedAtAction(nameof(Get), new { id = pesquisador.Id }, pesquisador);
+            return CreatedAtAction(nameof(Get), new { id = pesquisador.Id }, pesquisador);
+        }
+        catch (Exception)
+        {
+            return StatusCode(500, $"Erro ao criar pesquisador.");
+        }
     }
 
     [HttpPut("{id}")]
     public IActionResult Put(int id, Pesquisador pesquisadorAtualizado)
     {
-        var pesquisador = _context.Pesquisadores.Find(id);
-
-        if (pesquisador == null)
+        try
         {
-            return NotFound();
+            var pesquisador = _context.Pesquisadores.Find(id);
+
+            if (pesquisador == null)
+            {
+                return NotFound();
+            }
+
+            pesquisador.Nome = pesquisadorAtualizado.Nome;
+            pesquisador.Email = pesquisadorAtualizado.Email;
+            pesquisador.Curso = pesquisadorAtualizado.Curso;
+            pesquisador.Departamento = pesquisadorAtualizado.Departamento;
+
+            _context.SaveChanges();
+
+            return Ok(pesquisador);
         }
-
-        pesquisador.Nome = pesquisadorAtualizado.Nome;
-        pesquisador.Email = pesquisadorAtualizado.Email;
-        pesquisador.Curso = pesquisadorAtualizado.Curso;
-        pesquisador.Departamento = pesquisadorAtualizado.Departamento;
-
-        _context.SaveChanges();
-
-        return Ok(pesquisador);
+        catch (Exception)
+        {
+            return StatusCode(500, $"Erro ao atualizar pesquisador.");
+        }
     }
 
     [HttpDelete("{id}")]
     public IActionResult Delete(int id)
     {
-        var pesquisador = _context.Pesquisadores.Find(id);
-
-        if (pesquisador == null)
+        try
         {
-            return NotFound();
+            var pesquisador = _context.Pesquisadores.Find(id);
+
+            if (pesquisador == null)
+            {
+                return NotFound();
+            }
+
+            _context.Pesquisadores.Remove(pesquisador);
+
+            _context.SaveChanges();
+
+            return NoContent();
         }
-
-        _context.Pesquisadores.Remove(pesquisador);
-
-        _context.SaveChanges();
-
-        return NoContent();
+        catch (Exception)
+        {
+            return StatusCode(500, $"Erro ao deletar pesquisador.");
+        }
     }
 
     [HttpGet("{id}/projetos")]
     public IActionResult GetProjetos(int id)
     {
-        var projetos = _context.Projetos
-            .Where(p => p.PesquisadorId == id)
-            .ToList();
+        try
+        {
+            var projetos = _context.Projetos
+                .Where(p => p.PesquisadorId == id)
+                .ToList();
 
-        return Ok(projetos);
+            return Ok(projetos);
+        }
+        catch (Exception)
+        {
+            return StatusCode(500, $"Erro ao buscar projetos.");
+        }
     }
 
     [Authorize]
     [HttpGet("me/projetos")]
     public IActionResult GetMeusProjetos()
     {
-        var userId = int.Parse(
-            User.FindFirst(ClaimTypes.NameIdentifier)!.Value
-        );
+        try
+        {
+            var userId = int.Parse(
+                User.FindFirst(ClaimTypes.NameIdentifier)!.Value
+            );
 
-        var projetos = _context.Projetos
-            .Where(p => p.PesquisadorId == userId)
-            .ToList();
+            var projetos = _context.Projetos
+                .Where(p => p.PesquisadorId == userId)
+                .ToList();
 
-        return Ok(projetos);
+            return Ok(projetos);
+        }
+        catch (Exception)
+        {
+            return StatusCode(500, $"Erro ao buscar projetos do pesquisador autenticado.");
+        }
     }
 }

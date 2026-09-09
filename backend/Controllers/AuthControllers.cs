@@ -26,55 +26,62 @@ public class AuthController : ControllerBase
     [HttpPost("login")]
     public IActionResult Login(LoginModel login)
     {
-        var pesquisador = _context.Pesquisadores
-            .FirstOrDefault(p =>
-                p.Email.Trim().ToLower() == login.Email.Trim().ToLower()
+        try
+        {
+            var pesquisador = _context.Pesquisadores
+                .FirstOrDefault(p =>
+                    p.Email.Trim().ToLower() == login.Email.Trim().ToLower()
+                );
+
+            if (pesquisador == null || pesquisador.Senha != login.Senha)
+                return Unauthorized("Usuário ou senha inválidos");
+
+            var claims = new[]
+            {
+                new Claim(
+                    ClaimTypes.NameIdentifier,
+                    pesquisador.Id.ToString()
+                ),
+
+                new Claim(
+                    ClaimTypes.Name,
+                    pesquisador.Nome
+                ),
+
+                new Claim(
+                    ClaimTypes.Email,
+                    pesquisador.Email
+                )
+            };
+
+            var key = new SymmetricSecurityKey(
+                Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]!)
             );
 
-        if (pesquisador == null || pesquisador.Senha != login.Senha)
-            return Unauthorized("Usuário ou senha inválidos");
+            var credentials = new SigningCredentials(
+                key,
+                SecurityAlgorithms.HmacSha256
+            );
 
-        var claims = new[]
+            var token = new JwtSecurityToken(
+                issuer: _configuration["Jwt:Issuer"],
+                audience: _configuration["Jwt:Audience"],
+                claims: claims,
+                expires: DateTime.Now.AddHours(2),
+                signingCredentials: credentials
+            );
+
+            var tokenString = new JwtSecurityTokenHandler()
+                .WriteToken(token);
+
+            return Ok(new
+            {
+                token = tokenString
+            });
+        }
+        catch (Exception)
         {
-            new Claim(
-                ClaimTypes.NameIdentifier,
-                pesquisador.Id.ToString()
-            ),
-
-            new Claim(
-                ClaimTypes.Name,
-                pesquisador.Nome
-            ),
-
-            new Claim(
-                ClaimTypes.Email,
-                pesquisador.Email
-            )
-        };
-
-        var key = new SymmetricSecurityKey(
-            Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]!)
-        );
-
-        var credentials = new SigningCredentials(
-            key,
-            SecurityAlgorithms.HmacSha256
-        );
-
-        var token = new JwtSecurityToken(
-            issuer: _configuration["Jwt:Issuer"],
-            audience: _configuration["Jwt:Audience"],
-            claims: claims,
-            expires: DateTime.Now.AddHours(2),
-            signingCredentials: credentials
-        );
-
-        var tokenString = new JwtSecurityTokenHandler()
-            .WriteToken(token);
-
-        return Ok(new
-        {
-            token = tokenString
-        });
+            return StatusCode(500, $"Erro ao realizar login.");
+        }
     }
 }

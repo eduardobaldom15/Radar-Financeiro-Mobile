@@ -1,18 +1,33 @@
+using System.ComponentModel.DataAnnotations;
+
+
 namespace backend.Models;
 
 public class Pesquisador
 {
     public int Id { get; set; }
 
-    public string Nome { get; set; }
+    [Required]
+    [MaxLength(100)]
+    public required string Nome { get; set; }
 
-    public string Email { get; set; }
+    [Required]
+    [EmailAddress]
+    [MaxLength(100)]
+    public required string Email { get; set; }
 
-    public string Senha { get; set; }
+    [Required]
+    [DataType(DataType.Password)]
+    [MaxLength(100)]
+    public required string Senha { get; set; }
 
-    public string Curso { get; set; }
+    [Required]
+    [MaxLength(150)]
+    public required string Curso { get; set; }
 
-    public string Departamento { get; set; }
+    [Required]
+    [MaxLength(150)]
+    public string? Departamento { get; set; }
 
     public List<Projeto> Projetos { get; set; } = new();
 

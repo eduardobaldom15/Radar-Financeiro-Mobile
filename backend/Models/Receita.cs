@@ -1,12 +1,18 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace backend.Models;
 
 public class Receita
 {
 	public int Id { get; set; }
 
-	public string Tipo { get; set; }
+    [Required]
+    [MaxLength(150)]
+	public required string Tipo { get; set; }
 
-	public string Origem { get; set; }
+    [Required]
+    [MaxLength(150)]
+	public required string Origem { get; set; }
 
 	public DateTime DataEntrada { get; set; }
 
