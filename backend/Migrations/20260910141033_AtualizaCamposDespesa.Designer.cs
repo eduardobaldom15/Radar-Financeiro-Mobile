@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using backend.Data;
 
@@ -11,9 +12,11 @@ using backend.Data;
 namespace backend.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260910141033_AtualizaCamposDespesa")]
+    partial class AtualizaCamposDespesa
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -34,10 +37,6 @@ namespace backend.Migrations
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("varchar(100)");
-
-                    b.Property<string>("Descricao")
-                        .HasMaxLength(250)
-                        .HasColumnType("varchar(250)");
 
                     b.Property<string>("NomeDespesa")
                         .IsRequired()
@@ -181,6 +180,35 @@ namespace backend.Migrations
                     b.ToTable("Receitas");
                 });
 
+            modelBuilder.Entity("backend.Models.Usuario", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
+
+                    b.Property<int>("PesquisadorId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Senha")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PesquisadorId")
+                        .IsUnique();
+
+                    b.ToTable("Usuarios");
+                });
+
             modelBuilder.Entity("backend.Models.Despesa", b =>
                 {
                     b.HasOne("backend.Models.Projeto", "Projeto")
@@ -214,9 +242,22 @@ namespace backend.Migrations
                     b.Navigation("Projeto");
                 });
 
+            modelBuilder.Entity("backend.Models.Usuario", b =>
+                {
+                    b.HasOne("backend.Models.Pesquisador", "Pesquisador")
+                        .WithOne("Usuario")
+                        .HasForeignKey("backend.Models.Usuario", "PesquisadorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Pesquisador");
+                });
+
             modelBuilder.Entity("backend.Models.Pesquisador", b =>
                 {
                     b.Navigation("Projetos");
+
+                    b.Navigation("Usuario");
                 });
 #pragma warning restore 612, 618
         }

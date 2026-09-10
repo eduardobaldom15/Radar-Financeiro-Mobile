@@ -50,6 +50,7 @@ public class PesquisadoresController : ControllerBase
         }
     }
 
+    [Authorize]
     [HttpPut("{id}")]
     public IActionResult Put(int id, Pesquisador pesquisadorAtualizado)
     {
@@ -77,6 +78,7 @@ public class PesquisadoresController : ControllerBase
         }
     }
 
+    [Authorize]
     [HttpDelete("{id}")]
     public IActionResult Delete(int id)
     {
@@ -101,6 +103,7 @@ public class PesquisadoresController : ControllerBase
         }
     }
 
+    [Authorize]
     [HttpGet("{id}/projetos")]
     public IActionResult GetProjetos(int id)
     {

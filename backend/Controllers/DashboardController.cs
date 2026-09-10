@@ -16,6 +16,7 @@ public class DashboardController : ControllerBase
         _context = context;
     }
 
+    [Authorize]
     [HttpGet("pesquisador/{id}")]
     public IActionResult GetDashboard(int id)
     {

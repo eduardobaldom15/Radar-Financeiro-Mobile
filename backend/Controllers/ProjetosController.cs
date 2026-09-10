@@ -150,6 +150,7 @@ public class ProjetosController : ControllerBase
                 valorDisponivel,
                 economia,
                 despesaOrcada,
+                duracaoEmDias = projeto.DuracaoEmDias,
                 projeto = projeto.Nome
             });
         }

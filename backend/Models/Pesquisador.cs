@@ -31,5 +31,4 @@ public class Pesquisador
 
     public List<Projeto> Projetos { get; set; } = new();
 
-    public Usuario? Usuario { get; set; }
 }

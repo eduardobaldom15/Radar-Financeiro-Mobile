@@ -55,6 +55,8 @@ public class DespesasController : ControllerBase
 			if (projetoValido == null)
 				return BadRequest("Projeto inválido");
 
+			despesa.ValorRealizado = despesa.ValorUnitario * despesa.Quantidade;
+
 			_context.Despesas.Add(despesa);
 			_context.SaveChanges();
 
@@ -85,7 +87,9 @@ public class DespesasController : ControllerBase
 			despesa.Categoria = despesaAtualizada.Categoria;
 			despesa.Tipo = despesaAtualizada.Tipo;
 			despesa.NomeDespesa = despesaAtualizada.NomeDespesa;
-			despesa.ValorOrcado = despesaAtualizada.ValorOrcado;
+			despesa.ValorUnitario = despesaAtualizada.ValorUnitario;
+			despesa.Quantidade = despesaAtualizada.Quantidade;
+			despesa.ValorOrcado = despesa.ValorUnitario * despesa.Quantidade;
 			despesa.ValorRealizado = despesaAtualizada.ValorRealizado;
 			despesa.ProjetoId = despesaAtualizada.ProjetoId;
 

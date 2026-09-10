@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace backend.Models;
 
@@ -16,6 +17,9 @@ public class Projeto
     public DateTime DataInicio { get; set; }
 
     public DateTime DataFim { get; set; }
+
+    [NotMapped]
+    public int DuracaoEmDias => (DataFim - DataInicio).Days;
 
     [Required]
     [MaxLength(150)]
