@@ -14,6 +14,8 @@ import com.example.radarfinanceiro.network.RetrofitClient;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import android.content.Intent;
+import android.content.SharedPreferences;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -25,6 +27,12 @@ public class MainActivity extends AppCompatActivity {
         EditText email = findViewById(R.id.etEmail);
         EditText senha = findViewById(R.id.etSenha);
         Button btnLogin = findViewById(R.id.btnLogin);
+        Button btnCadastro = findViewById(R.id.btnCadastro);
+
+        btnCadastro.setOnClickListener(v -> {
+            Intent intent = new Intent(MainActivity.this, CadastroActivity.class);
+            startActivity(intent);
+        });
 
         btnLogin.setOnClickListener(v -> {
 
@@ -35,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
                     new LoginRequest(emailTexto, senhaTexto);
 
             Call<LoginResponse> call =
-                    RetrofitClient.getApiService().login(request);
+                    RetrofitClient.getApiService(MainActivity.this).login(request);
 
             call.enqueue(new Callback<LoginResponse>() {
 
@@ -48,6 +56,18 @@ public class MainActivity extends AppCompatActivity {
                             && response.body() != null) {
 
                         String token = response.body().getToken();
+                        SharedPreferences preferences =
+                                getSharedPreferences("RadarFinanceiro", MODE_PRIVATE);
+
+                        preferences.edit()
+                                .putString("token", token)
+                                .apply();
+
+                        Intent intent =
+                                new Intent(MainActivity.this, ProjetosActivity.class);
+
+                        startActivity(intent);
+                        finish();
 
                         Toast.makeText(
                                 MainActivity.this,

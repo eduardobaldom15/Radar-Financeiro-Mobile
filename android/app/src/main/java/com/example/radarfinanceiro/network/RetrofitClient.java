@@ -2,6 +2,9 @@ package com.example.radarfinanceiro.network;
 
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
+import android.content.Context;
+
+import okhttp3.OkHttpClient;
 
 public class RetrofitClient {
 
@@ -10,11 +13,19 @@ public class RetrofitClient {
 
     private static Retrofit retrofit;
 
-    public static Retrofit getInstance() {
+    public static Retrofit getInstance(Context context) {
 
         if (retrofit == null) {
+
+            OkHttpClient client = new OkHttpClient.Builder()
+                    .addInterceptor(
+                            new AuthInterceptor(context)
+                    )
+                    .build();
+
             retrofit = new Retrofit.Builder()
                     .baseUrl(BASE_URL)
+                    .client(client)
                     .addConverterFactory(
                             GsonConverterFactory.create()
                     )
@@ -24,7 +35,7 @@ public class RetrofitClient {
         return retrofit;
     }
 
-    public static ApiService getApiService() {
-        return getInstance().create(ApiService.class);
+    public static ApiService getApiService(Context context) {
+        return getInstance(context).create(ApiService.class);
     }
 }
