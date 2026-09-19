@@ -71,7 +71,7 @@
                         android:id="@+id/tvQuantidadeProjetos"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="5"
+                        android:text="0"
                         android:textSize="32sp"
                         android:textStyle="bold" />
 
@@ -111,7 +111,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
-                    android:text="R$ 50.000,00"
+                    android:text="R$ 0,00"
                     android:textSize="24sp"
                     android:textStyle="bold" />
 
@@ -143,7 +143,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
-                    android:text="R$ 40.000,00"
+                    android:text="R$ 0,00"
                     android:textSize="24sp"
                     android:textStyle="bold" />
 
@@ -175,7 +175,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
-                    android:text="R$ 32.000,00"
+                    android:text="R$ 0,00"
                     android:textSize="24sp"
                     android:textStyle="bold" />
 
@@ -209,8 +209,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="20dp"
                     android:layout_marginTop="12dp"
-                    android:max="100"
-                    android:progress="64" />
+                    android:max="100" />
 
                 <TextView
                     android:id="@+id/tvPercentualUtilizado"
@@ -218,7 +217,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginTop="8dp"
-                    android:text="64% da receita utilizada"
+                    android:text="0% da receita utilizada"
                     android:textSize="14sp" />
 
             </LinearLayout>
@@ -298,7 +297,6 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:gravity="center"
-                    android:text="R$ 8.000,00"
                     android:textSize="20sp"
                     android:textStyle="bold" />
 

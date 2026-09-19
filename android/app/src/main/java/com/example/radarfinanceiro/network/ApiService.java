@@ -12,6 +12,11 @@ import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.POST;
 
+import com.example.radarfinanceiro.models.Despesa;
+import com.example.radarfinanceiro.models.Receita;
+
+import retrofit2.http.Path;
+
 public interface ApiService {
 
     @POST("api/Auth/login")
@@ -22,4 +27,10 @@ public interface ApiService {
 
     @GET("api/Pesquisadores/me/projetos")
     Call<List<Projeto>> getMeusProjetos();
+
+    @GET("api/Receitas/projeto/{id}")
+    Call<List<Receita>> getReceitasPorProjeto(@Path("id") int id);
+
+    @GET("api/Despesas/projeto/{id}")
+    Call<List<Despesa>> getDespesasPorProjeto(@Path("id") int id);
 }
