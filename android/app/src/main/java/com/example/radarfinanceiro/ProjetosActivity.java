@@ -1,7 +1,9 @@
 package com.example.radarfinanceiro;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -27,7 +29,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class ProjetosActivity extends AppCompatActivity {
-
+    private Button btnGerenciarProjetos;
     private double receitaTotal = 0;
     private double despesaOrcada = 0;
     private double despesaRealizada = 0;
@@ -49,6 +51,7 @@ public class ProjetosActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_projetos);
+
         tvQuantidadeProjetos =
                 findViewById(R.id.tvQuantidadeProjetos);
 
@@ -78,6 +81,20 @@ public class ProjetosActivity extends AppCompatActivity {
 
         spinnerProjetos =
                 findViewById(R.id.spinnerProjetos);
+
+        btnGerenciarProjetos =
+                findViewById(R.id.btnGerenciarProjetos);
+
+        btnGerenciarProjetos.setOnClickListener(v -> {
+
+            Intent intent =
+                    new Intent(
+                            ProjetosActivity.this,
+                            GerenciarProjetosActivity.class
+                    );
+
+            startActivity(intent);
+        });
 
         Call<List<Projeto>> call =
                 RetrofitClient
