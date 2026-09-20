@@ -3,9 +3,12 @@ package com.example.radarfinanceiro;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ProgressBar;
+import android.widget.ArrayAdapter;
+import android.widget.AdapterView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -14,6 +17,7 @@ import com.example.radarfinanceiro.models.Projeto;
 import com.example.radarfinanceiro.models.Receita;
 import com.example.radarfinanceiro.network.RetrofitClient;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.text.NumberFormat;
 import java.util.Locale;
@@ -27,7 +31,6 @@ public class ProjetosActivity extends AppCompatActivity {
     private double receitaTotal = 0;
     private double despesaOrcada = 0;
     private double despesaRealizada = 0;
-
     private int chamadasPendentes = 0;
     private TextView tvQuantidadeProjetos;
     private TextView tvReceitaTotal;
@@ -39,6 +42,8 @@ public class ProjetosActivity extends AppCompatActivity {
     private TextView tvSaldoOrcamentario;
     private View marcadorSaldo;
     private FrameLayout graficoSaldo;
+    private Spinner spinnerProjetos;
+    private List<Projeto> projetos;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,6 +76,9 @@ public class ProjetosActivity extends AppCompatActivity {
         marcadorSaldo =
                 findViewById(R.id.marcadorSaldo);
 
+        spinnerProjetos =
+                findViewById(R.id.spinnerProjetos);
+
         Call<List<Projeto>> call =
                 RetrofitClient
                         .getApiService(ProjetosActivity.this)
@@ -85,7 +93,66 @@ public class ProjetosActivity extends AppCompatActivity {
 
                 if (response.isSuccessful() && response.body() != null) {
 
-                    List<Projeto> projetos = response.body();
+                    projetos = response.body();
+
+                    List<String> nomesProjetos = new ArrayList<>();
+
+
+                    nomesProjetos.add("Todos os projetos");
+
+                    for (Projeto projeto : projetos) {
+                        nomesProjetos.add(projeto.getNome());
+                    }
+
+                    ArrayAdapter<String> adapter =
+                            new ArrayAdapter<>(
+                                    ProjetosActivity.this,
+                                    android.R.layout.simple_spinner_item,
+                                    nomesProjetos
+                            );
+
+                    adapter.setDropDownViewResource(
+                            android.R.layout.simple_spinner_dropdown_item
+                    );
+
+                    spinnerProjetos.setAdapter(adapter);
+
+                    spinnerProjetos.setOnItemSelectedListener(
+                            new AdapterView.OnItemSelectedListener() {
+
+                                @Override
+                                public void onItemSelected(
+                                        AdapterView<?> parent,
+                                        View view,
+                                        int position,
+                                        long id) {
+
+                                    if (position == 0) {
+
+                                        carregarProjetosFinanceiros(projetos);
+
+                                    } else {
+
+                                        Projeto projetoSelecionado =
+                                                projetos.get(position - 1);
+
+                                        List<Projeto> projetoSelecionadoLista =
+                                                new ArrayList<>();
+
+                                        projetoSelecionadoLista.add(projetoSelecionado);
+
+                                        carregarProjetosFinanceiros(
+                                                projetoSelecionadoLista
+                                        );
+                                    }
+                                }
+
+                                @Override
+                                public void onNothingSelected(
+                                        AdapterView<?> parent) {
+                                }
+                            }
+                    );
 
                     Toast.makeText(
                             ProjetosActivity.this,
@@ -94,20 +161,6 @@ public class ProjetosActivity extends AppCompatActivity {
                     ).show();
 
                     tvQuantidadeProjetos.setText(String.valueOf(projetos.size()));
-
-                    receitaTotal = 0;
-                    despesaOrcada = 0;
-                    despesaRealizada = 0;
-
-                    chamadasPendentes = projetos.size() * 2;
-
-                    for (Projeto projeto : projetos) {
-
-                        int projetoId = projeto.getId();
-
-                        buscarReceitas(projetoId);
-                        buscarDespesas(projetoId);
-                    }
 
                 } else {
 
@@ -286,6 +339,22 @@ public class ProjetosActivity extends AppCompatActivity {
                         posicao * deslocamentoMaximo
                 );
             });
+        }
+    }
+    private void carregarProjetosFinanceiros(List<Projeto> projetosSelecionados) {
+        receitaTotal = 0;
+        despesaOrcada = 0;
+        despesaRealizada = 0;
+
+    chamadasPendentes =
+            projetosSelecionados.size() * 2;
+
+    for (Projeto projeto : projetosSelecionados) {
+
+            int projetoId = projeto.getId();
+
+            buscarReceitas(projetoId);
+            buscarDespesas(projetoId);
         }
     }
 }
