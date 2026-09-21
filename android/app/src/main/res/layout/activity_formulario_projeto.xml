@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="24dp">
+
+        <TextView
+            android:id="@+id/tvTituloFormulario"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Novo Projeto"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="24dp" />
+
+        <EditText
+            android:id="@+id/edtNome"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Nome do projeto"
+            android:inputType="text"
+            android:layout_marginBottom="16dp" />
+
+        <EditText
+            android:id="@+id/edtPrograma"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Programa"
+            android:inputType="text"
+            android:layout_marginBottom="16dp" />
+
+        <EditText
+            android:id="@+id/edtDescricao"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Descrição"
+            android:inputType="textMultiLine"
+            android:minLines="3"
+            android:gravity="top"
+            android:layout_marginBottom="16dp" />
+
+        <EditText
+            android:id="@+id/edtDataInicio"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Data de início (dd/mm/aaaa)"
+            android:focusable="false"
+            android:clickable="true"
+            android:layout_marginBottom="16dp" />
+
+        <EditText
+            android:id="@+id/edtDataFim"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Data de fim (dd/mm/aaaa)"
+            android:focusable="false"
+            android:clickable="true"
+            android:layout_marginBottom="24dp" />
+
+        <Button
+            android:id="@+id/btnSalvarProjeto"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Salvar alterações" />
+
+        <Button
+            android:id="@+id/btnCancelar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Cancelar" />
+
+    </LinearLayout>
+
+</ScrollView>
