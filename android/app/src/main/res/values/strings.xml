@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Radar Financeiro</string>
+
+    <string name="receita_valor_data">R$ %1$.2f - %2$s</string>
 </resources>

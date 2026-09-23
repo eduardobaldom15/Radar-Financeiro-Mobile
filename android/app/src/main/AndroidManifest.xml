@@ -32,15 +32,19 @@
             android:name=".ProjetosActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />
-
         <activity
             android:name=".GerenciarProjetosActivity"
             android:exported="false" />
-
         <activity
             android:name=".FormularioProjetoActivity"
             android:exported="false" />
-
+        <activity
+            android:name=".EditarFinancasActivity"
+            android:exported="false" />
+        <activity
+            android:name=".FormularioReceitaActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
     </application>
 
 </manifest>

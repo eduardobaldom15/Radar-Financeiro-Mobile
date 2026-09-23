@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <TextView
+        android:id="@+id/tvNomeProjeto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Nome do projeto"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:layout_marginBottom="24dp" />
+
+    <TextView
+        android:id="@+id/tvReceitaTotal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Receita total: R$ 0,00"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/tvDespesaOrcada"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Despesa orçada: R$ 0,00"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/tvDespesaRealizada"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Despesa realizada: R$ 0,00"
+        android:textSize="16sp"
+        android:layout_marginBottom="24dp" />
+
+    <TextView
+        android:id="@+id/tvTituloReceitas"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Receitas"
+        android:textSize="20sp"
+        android:textStyle="bold" />
+
+    <Button
+        android:id="@+id/btnAdicionarReceita"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Adicionar receita" />
+
+    <LinearLayout
+        android:id="@+id/containerReceitas"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" />
+
+    <TextView
+        android:id="@+id/tvTituloDespesas"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Despesas"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:layout_marginTop="24dp" />
+
+    <Button
+        android:id="@+id/btnAdicionarDespesa"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Adicionar despesa" />
+
+    <LinearLayout
+        android:id="@+id/containerDespesas"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" />
+
+</LinearLayout>
