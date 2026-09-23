@@ -54,6 +54,8 @@ public class ReceitasController : ControllerBase
             if (projetoValido == null)
                 return BadRequest("Projeto inválido");
 
+            receita.DataEntrada = DateTime.Now;
+
             _context.Receitas.Add(receita);
             _context.SaveChanges();
 
