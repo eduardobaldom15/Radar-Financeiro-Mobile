@@ -5,6 +5,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 import android.content.Intent;
+import android.util.Log;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -47,6 +48,8 @@ public class CadastroActivity extends AppCompatActivity {
                             cursoTexto,
                             departamentoTexto
                     );
+
+            Log.d("CADASTRO", "Enviando cadastro...");
 
             Call<Void> call =
                     RetrofitClient.getApiService(CadastroActivity.this).cadastrar(request);

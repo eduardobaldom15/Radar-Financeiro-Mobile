@@ -101,6 +101,11 @@ public class GerenciarProjetosActivity extends AppCompatActivity {
                                                 R.id.btnExcluir
                                         );
 
+                                Button btnFinancas =
+                                        blocoProjeto.findViewById(
+                                                R.id.btnFinancas
+                                        );
+
                                 TextView tvDescricaoProjeto =
                                         blocoProjeto.findViewById(
                                                 R.id.tvDescricaoProjeto
@@ -137,6 +142,20 @@ public class GerenciarProjetosActivity extends AppCompatActivity {
                                     intent.putExtra("programa", projeto.getPrograma());
                                     intent.putExtra("dataInicio", projeto.getDataInicio());
                                     intent.putExtra("dataFim", projeto.getDataFim());
+
+                                    startActivity(intent);
+                                });
+
+                                btnFinancas.setOnClickListener(v -> {
+
+                                    Intent intent =
+                                            new Intent(
+                                                    GerenciarProjetosActivity.this,
+                                                    EditarFinancasActivity.class
+                                            );
+
+                                    intent.putExtra("projetoId", projeto.getId());
+                                    intent.putExtra("nomeProjeto", projeto.getNome());
 
                                     startActivity(intent);
                                 });

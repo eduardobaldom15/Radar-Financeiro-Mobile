@@ -4,8 +4,12 @@ import com.example.radarfinanceiro.models.LoginRequest;
 import com.example.radarfinanceiro.models.LoginResponse;
 import com.example.radarfinanceiro.models.PesquisadorRequest;
 import com.example.radarfinanceiro.models.ProjetoRequest;
-
 import com.example.radarfinanceiro.models.Projeto;
+import com.example.radarfinanceiro.models.Receita;
+import com.example.radarfinanceiro.models.ReceitaRequest;
+import com.example.radarfinanceiro.models.Despesa;
+import com.example.radarfinanceiro.models.DespesaRequest;
+
 import java.util.List;
 import retrofit2.http.GET;
 
@@ -31,12 +35,6 @@ public interface ApiService {
     @GET("api/Pesquisadores/me/projetos")
     Call<List<Projeto>> getMeusProjetos();
 
-    @GET("api/Receitas/projeto/{id}")
-    Call<List<Receita>> getReceitasPorProjeto(@Path("id") int id);
-
-    @GET("api/Despesas/projeto/{id}")
-    Call<List<Despesa>> getDespesasPorProjeto(@Path("id") int id);
-
     @POST("api/Projetos")
     Call<Projeto> criarProjeto(
             @Body ProjetoRequest projeto
@@ -51,4 +49,21 @@ public interface ApiService {
     Call<Void> excluirProjeto(
             @Path("id") int id
     );
+
+    @GET("api/Receitas/projeto/{id}")
+    Call<List<Receita>> getReceitasPorProjeto(@Path("id") int id);
+
+    @POST("api/Receitas")
+    Call<Receita> criarReceita(
+            @Body ReceitaRequest receita);
+
+    @DELETE("api/Receitas/{id}")
+    Call<Void> excluirReceita(@Path("id") int id);
+
+    @GET("api/Despesas/projeto/{id}")
+    Call<List<Despesa>> getDespesasPorProjeto(@Path("id") int id);
+
+    @POST("api/Despesas")
+    Call<Despesa> criarDespesa(
+            @Body DespesaRequest despesa);
 }
