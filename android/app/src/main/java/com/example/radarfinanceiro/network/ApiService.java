@@ -66,4 +66,7 @@ public interface ApiService {
     @POST("api/Despesas")
     Call<Despesa> criarDespesa(
             @Body DespesaRequest despesa);
+
+    @DELETE("api/Despesas/{id}")
+    Call<Void> excluirDespesa(@Path("id") int id);
 }

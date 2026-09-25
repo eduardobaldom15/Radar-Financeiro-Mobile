@@ -5,7 +5,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="16dp">
+    android:paddingStart="16dp"
+    android:paddingEnd="16dp"
+    android:paddingTop="48dp"
+    android:paddingBottom="16dp">
 
     <TextView
         android:id="@+id/tvNomeProjeto"
@@ -39,19 +42,35 @@
         android:textSize="16sp"
         android:layout_marginBottom="24dp" />
 
-    <TextView
-        android:id="@+id/tvTituloReceitas"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Receitas"
-        android:textSize="20sp"
-        android:textStyle="bold" />
-
-    <Button
-        android:id="@+id/btnAdicionarReceita"
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Adicionar receita" />
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:id="@+id/tvTituloReceitas"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Receitas"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/btnAdicionarReceita"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Adicionar receita"
+            android:minHeight="0dp"
+            android:minWidth="0dp"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
+            android:paddingTop="4dp"
+            android:paddingBottom="4dp"
+            android:layout_marginStart="24dp"
+            android:translationY="1dp"/>
+
+    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/containerReceitas"
@@ -59,25 +78,51 @@
         android:layout_height="wrap_content"
         android:orientation="vertical" />
 
-    <TextView
-        android:id="@+id/tvTituloDespesas"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Despesas"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        android:layout_marginTop="24dp" />
-
-    <Button
-        android:id="@+id/btnAdicionarDespesa"
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Adicionar despesa" />
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layout_marginTop="24dp">
+
+        <TextView
+            android:id="@+id/tvTituloDespesas"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Despesas"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/btnAdicionarDespesa"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Adicionar despesa"
+            android:minHeight="0dp"
+            android:minWidth="0dp"
+            android:paddingStart="8dp"
+            android:paddingEnd="8dp"
+            android:paddingTop="4dp"
+            android:paddingBottom="4dp"
+            android:layout_marginStart="24dp"
+            android:translationY="1dp"/>
+
+    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/containerDespesas"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical" />
+
+    <Button
+        android:id="@+id/btnVoltar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Voltar"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginBottom="24dp" />
 
 </LinearLayout>

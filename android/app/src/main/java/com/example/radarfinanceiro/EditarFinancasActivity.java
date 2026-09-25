@@ -12,9 +12,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.widget.Toast;
 
 import com.example.radarfinanceiro.models.Receita;
+import com.example.radarfinanceiro.models.Despesa;
 import com.example.radarfinanceiro.network.RetrofitClient;
 
 import java.util.List;
+import java.text.NumberFormat;
+import java.util.Locale;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -22,10 +25,24 @@ import retrofit2.Response;
 
 public class EditarFinancasActivity extends AppCompatActivity {
 
+    private String formatarMoeda(double valor) {
+        NumberFormat formato =
+                NumberFormat.getCurrencyInstance(
+                        new Locale("pt", "BR")
+                );
+
+        return formato.format(valor);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_editar_financas);
+
+        Button btnVoltar =
+                findViewById(R.id.btnVoltar);
+
+        btnVoltar.setOnClickListener(v -> finish());
 
         Intent intent = getIntent();
 
@@ -36,6 +53,15 @@ public class EditarFinancasActivity extends AppCompatActivity {
                 findViewById(R.id.tvNomeProjeto);
 
         tvNomeProjeto.setText(nomeProjeto);
+
+        TextView tvReceitaTotal =
+                findViewById(R.id.tvReceitaTotal);
+
+        TextView tvDespesaOrcada =
+                findViewById(R.id.tvDespesaOrcada);
+
+        TextView tvDespesaRealizada =
+                findViewById(R.id.tvDespesaRealizada);
 
         Button btnAdicionarReceita =
                 findViewById(R.id.btnAdicionarReceita);
@@ -58,6 +84,25 @@ public class EditarFinancasActivity extends AppCompatActivity {
 
         tvNomeProjeto.setText(nomeProjeto);
 
+        Button btnAdicionarDespesa =
+                findViewById(R.id.btnAdicionarDespesa);
+
+        btnAdicionarDespesa.setOnClickListener(v -> {
+
+            Intent intentFormulario =
+                    new Intent(
+                            EditarFinancasActivity.this,
+                            FormularioDespesaActivity.class
+                    );
+
+            intentFormulario.putExtra(
+                    "projetoId",
+                    projetoId
+            );
+
+            startActivity(intentFormulario);
+        });
+
         Call<List<Receita>> call =
                 RetrofitClient
                         .getApiService(EditarFinancasActivity.this)
@@ -74,6 +119,17 @@ public class EditarFinancasActivity extends AppCompatActivity {
                         && response.body() != null) {
 
                     List<Receita> receitas = response.body();
+
+                    double receitaTotal = 0;
+
+                    for (Receita receita : receitas) {
+                        receitaTotal += receita.getValor();
+                    }
+
+                    tvReceitaTotal.setText(
+                            "Receita total: "
+                                    + formatarMoeda(receitaTotal)
+                    );
 
                     LinearLayout containerReceitas =
                             findViewById(R.id.containerReceitas);
@@ -173,11 +229,9 @@ public class EditarFinancasActivity extends AppCompatActivity {
                         }
 
                         tvValorDataReceita.setText(
-                                getString(
-                                        R.string.receita_valor_data,
-                                        receita.getValor(),
-                                        data
-                                )
+                                formatarMoeda(receita.getValor())
+                                        + " - "
+                                        + data
                         );
 
                         containerReceitas.addView(itemReceita);
@@ -193,6 +247,150 @@ public class EditarFinancasActivity extends AppCompatActivity {
                 Toast.makeText(
                         EditarFinancasActivity.this,
                         "Erro ao carregar receitas",
+                        Toast.LENGTH_SHORT
+                ).show();
+            }
+        });
+
+        Call<List<Despesa>> callDespesas =
+                RetrofitClient
+                        .getApiService(EditarFinancasActivity.this)
+                        .getDespesasPorProjeto(projetoId);
+
+        callDespesas.enqueue(new Callback<List<Despesa>>() {
+
+            @Override
+            public void onResponse(
+                    Call<List<Despesa>> callDespesas,
+                    Response<List<Despesa>> response) {
+
+                if (response.isSuccessful()
+                        && response.body() != null) {
+
+                    List<Despesa> despesas = response.body();
+
+                    double despesaOrcada = 0;
+                    double despesaRealizada = 0;
+
+                    for (Despesa despesa : despesas) {
+                        despesaOrcada += despesa.getValorOrcado();
+                        despesaRealizada += despesa.getValorRealizado();
+                    }
+
+                    tvDespesaOrcada.setText(
+                            "Despesa orçada: "
+                                    + formatarMoeda(despesaOrcada)
+                    );
+
+                    tvDespesaRealizada.setText(
+                            "Despesa realizada: "
+                                    + formatarMoeda(despesaRealizada)
+                    );
+
+                    LinearLayout containerDespesas =
+                            findViewById(R.id.containerDespesas);
+
+                    containerDespesas.removeAllViews();
+
+                    for (Despesa despesa : despesas) {
+
+                        LinearLayout itemDespesa =
+                                (LinearLayout) getLayoutInflater().inflate(
+                                        R.layout.item_despesa,
+                                        containerDespesas,
+                                        false
+                                );
+
+                        TextView tvNomeDespesa =
+                                itemDespesa.findViewById(
+                                        R.id.tvNomeDespesa
+                                );
+
+                        TextView tvValoresDespesa =
+                                itemDespesa.findViewById(
+                                        R.id.tvValoresDespesa
+                                );
+
+                        tvNomeDespesa.setText(
+                                despesa.getNomeDespesa()
+                        );
+
+                        Button btnExcluirDespesa =
+                                itemDespesa.findViewById(
+                                        R.id.btnExcluirDespesa
+                                );
+
+                        tvValoresDespesa.setText(
+                                "Orçado: "
+                                        + formatarMoeda(despesa.getValorOrcado())
+                                        + "\nRealizado: "
+                                        + formatarMoeda(despesa.getValorRealizado())
+                        );
+
+                        containerDespesas.addView(itemDespesa);
+
+                        btnExcluirDespesa.setOnClickListener(v -> {
+
+                            Call<Void> callExcluir =
+                                    RetrofitClient
+                                            .getApiService(
+                                                    EditarFinancasActivity.this
+                                            )
+                                            .excluirDespesa(despesa.getId());
+
+                            callExcluir.enqueue(new Callback<Void>() {
+
+                                @Override
+                                public void onResponse(
+                                        Call<Void> callExcluir,
+                                        Response<Void> response) {
+
+                                    if (response.isSuccessful()) {
+
+                                        containerDespesas.removeView(itemDespesa);
+
+                                        Toast.makeText(
+                                                EditarFinancasActivity.this,
+                                                "Despesa excluída com sucesso!",
+                                                Toast.LENGTH_SHORT
+                                        ).show();
+
+                                    } else {
+
+                                        Toast.makeText(
+                                                EditarFinancasActivity.this,
+                                                "Erro ao excluir: "
+                                                        + response.code(),
+                                                Toast.LENGTH_SHORT
+                                        ).show();
+                                    }
+                                }
+
+                                @Override
+                                public void onFailure(
+                                        Call<Void> callExcluir,
+                                        Throwable t) {
+
+                                    Toast.makeText(
+                                            EditarFinancasActivity.this,
+                                            "Erro ao excluir despesa",
+                                            Toast.LENGTH_SHORT
+                                    ).show();
+                                }
+                            });
+                        });
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(
+                    Call<List<Despesa>> callDespesas,
+                    Throwable t) {
+
+                Toast.makeText(
+                        EditarFinancasActivity.this,
+                        "Erro ao carregar despesas",
                         Toast.LENGTH_SHORT
                 ).show();
             }

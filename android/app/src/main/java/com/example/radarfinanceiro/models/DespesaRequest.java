@@ -14,6 +14,7 @@ public class DespesaRequest {
             String categoria,
             String tipo,
             String nomeDespesa,
+            String descricao,
             double valorUnitario,
             double quantidade,
             double valorOrcado,
@@ -22,6 +23,7 @@ public class DespesaRequest {
         this.categoria = categoria;
         this.tipo = tipo;
         this.nomeDespesa = nomeDespesa;
+        this.descricao = descricao;
         this.valorUnitario = valorUnitario;
         this.quantidade = quantidade;
         this.valorOrcado = valorOrcado;
