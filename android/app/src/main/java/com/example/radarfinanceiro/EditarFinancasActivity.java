@@ -25,6 +25,12 @@ import retrofit2.Response;
 
 public class EditarFinancasActivity extends AppCompatActivity {
 
+    private int projetoId;
+
+    private TextView tvReceitaTotal;
+    private TextView tvDespesaOrcada;
+    private TextView tvDespesaRealizada;
+
     private String formatarMoeda(double valor) {
         NumberFormat formato =
                 NumberFormat.getCurrencyInstance(
@@ -46,7 +52,7 @@ public class EditarFinancasActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
 
-        int projetoId = intent.getIntExtra("projetoId", -1);
+        projetoId = intent.getIntExtra("projetoId", -1);
         String nomeProjeto = intent.getStringExtra("nomeProjeto");
 
         TextView tvNomeProjeto =
@@ -54,13 +60,13 @@ public class EditarFinancasActivity extends AppCompatActivity {
 
         tvNomeProjeto.setText(nomeProjeto);
 
-        TextView tvReceitaTotal =
+        tvReceitaTotal =
                 findViewById(R.id.tvReceitaTotal);
 
-        TextView tvDespesaOrcada =
+        tvDespesaOrcada =
                 findViewById(R.id.tvDespesaOrcada);
 
-        TextView tvDespesaRealizada =
+        tvDespesaRealizada =
                 findViewById(R.id.tvDespesaRealizada);
 
         Button btnAdicionarReceita =
@@ -102,6 +108,16 @@ public class EditarFinancasActivity extends AppCompatActivity {
 
             startActivity(intentFormulario);
         });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        carregarDados();
+    }
+
+    private void carregarDados() {
 
         Call<List<Receita>> call =
                 RetrofitClient
@@ -178,7 +194,7 @@ public class EditarFinancasActivity extends AppCompatActivity {
 
                                     if (response.isSuccessful()) {
 
-                                        containerReceitas.removeView(itemReceita);
+                                        carregarDados();
 
                                         Toast.makeText(
                                                 EditarFinancasActivity.this,
@@ -347,7 +363,7 @@ public class EditarFinancasActivity extends AppCompatActivity {
 
                                     if (response.isSuccessful()) {
 
-                                        containerDespesas.removeView(itemDespesa);
+                                        carregarDados();
 
                                         Toast.makeText(
                                                 EditarFinancasActivity.this,
