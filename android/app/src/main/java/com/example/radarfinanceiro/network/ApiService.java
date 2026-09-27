@@ -60,13 +60,13 @@ public interface ApiService {
     @DELETE("api/Receitas/{id}")
     Call<Void> excluirReceita(@Path("id") int id);
 
-    @GET("api/Despesas/projeto/{id}")
-    Call<List<Despesa>> getDespesasPorProjeto(@Path("id") int id);
-
-    @POST("api/Despesas")
-    Call<Despesa> criarDespesa(
-            @Body DespesaRequest despesa);
-
-    @DELETE("api/Despesas/{id}")
-    Call<Void> excluirDespesa(@Path("id") int id);
-}
+    @GET("api/Despesas/projeto/{id}\")\n" +
+            "    Call<List<Despesa>> getDespesasPorProjeto(@Path(\"id\") int id);\n" +
+            "\n" +
+            "    @POST(\"api/Despesas\")\n" +
+            "    Call<Despesa> criarDespesa(\n" +
+            "            @Body DespesaRequest despesa);\n" +
+            "\n" +
+            "    @DELETE(\"api/Despesas/{id}\")\n" +
+            "    Call<Void> excluirDespesa(@Path(\"id\") int id);\n" +
+            "}
