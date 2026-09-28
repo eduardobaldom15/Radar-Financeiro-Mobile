@@ -50,6 +50,12 @@ public class FormularioDespesaActivity extends AppCompatActivity {
         EditText etValorOrcadoDespesa =
                 findViewById(R.id.etValorOrcadoDespesa);
 
+        Button btnCancelar = findViewById(R.id.btnCancelar);
+
+        btnCancelar.setOnClickListener(v -> {
+            finish();
+        });
+
         Button btnCadastrarDespesa =
                 findViewById(R.id.btnCadastrarDespesa);
 

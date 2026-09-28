@@ -49,4 +49,10 @@
         android:layout_height="wrap_content"
         android:text="Cadastrar receita" />
 
+    <Button
+        android:id="@+id/btnCancelar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Cancelar" />
+
 </LinearLayout>

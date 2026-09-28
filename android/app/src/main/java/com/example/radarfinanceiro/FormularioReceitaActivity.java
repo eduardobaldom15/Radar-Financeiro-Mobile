@@ -37,6 +37,12 @@ public class FormularioReceitaActivity extends AppCompatActivity {
         EditText etValorReceita =
                 findViewById(R.id.etValorReceita);
 
+        Button btnCancelar = findViewById(R.id.btnCancelar);
+
+        btnCancelar.setOnClickListener(v -> {
+            finish();
+        });
+
         Button btnCadastrarReceita =
                 findViewById(R.id.btnCadastrarReceita);
 
