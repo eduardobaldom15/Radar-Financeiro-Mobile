@@ -9,7 +9,7 @@ import okhttp3.OkHttpClient;
 public class RetrofitClient {
 
     private static final String BASE_URL =
-            "https://radar-financeiro-0pcl.onrender.com/";
+            "http://10.0.2.2:5279/";
 
     private static Retrofit retrofit;
 
